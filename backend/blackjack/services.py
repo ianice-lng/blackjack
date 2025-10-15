@@ -11,7 +11,6 @@ def start_game(name, player_names):
 
 def get_game(id_game=None):
     if id_game:
-        return Game.objects.filter(id= id_game)
-    else: 
-        return "Le nom de la game est None"
+        return Game.objects.filter(id=id_game).first()  # ou Game.objects.get(id=id_game)
+    return None
     
