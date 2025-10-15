@@ -1,5 +1,9 @@
+import { useParams} from 'react-router-dom';
+import { useState } from 'react';
 import type {Game} from '../types/'
-
+import ListPlayers from '../components/ListPlayers';
+import SelectList from '../components/SelectList';
+import { use } from 'react';
 const game: Game = {"id": 24, 
   "name": "partie jspcbm", 
   "turn": 4, 
@@ -30,10 +34,20 @@ const game: Game = {"id": 24,
 };
 
 
-export default function CreateGame() {
+export default function Game() {
+  const { id } = useParams<{ id: string }>();
+  const [numberDice, setNumberDice] = useState<number>(1);
+  const handlePlay = () => {
+    console.log("Play, numberDice:", numberDice);
+  };
   return (
     <div className="App">
       <h1>Game {game.name}</h1>
+      <h2>Au tour de {game.current_players[0].name}</h2>
+      <SelectList setNumberDice={setNumberDice} />
+      <button onClick={handlePlay}>Lancer</button>
+      <h2>Players:</h2>
+      <ListPlayers listPlayers={game.players} />
     </div>
   ) 
 }
