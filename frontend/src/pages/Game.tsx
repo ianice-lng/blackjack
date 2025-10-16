@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type {Game} from '../types/'
 import ListPlayers from '../components/ListPlayers';
 import SelectList from '../components/SelectList';
-import { use } from 'react';
+import ListWinner from '../components/ListWinner';
 const game: Game = {"id": 24, 
   "name": "partie jspcbm", 
   "turn": 4, 
@@ -48,6 +48,9 @@ export default function Game() {
       <button onClick={handlePlay}>Lancer</button>
       <h2>Players:</h2>
       <ListPlayers listPlayers={game.players} />
+
+      <h2>Winners:</h2>
+      <ListWinner listWinner={game.winners} />
     </div>
   ) 
 }
