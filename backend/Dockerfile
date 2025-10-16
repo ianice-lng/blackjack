@@ -1,19 +1,20 @@
-# Use official Python image
+# backend/Dockerfile
+
 FROM python:3.12-slim
 
-# Set working directory
+# Dossier de travail racine
 WORKDIR /app
 
-# Install dependencies
+# Copier et installer les dépendances
 COPY backend/requirements.txt .
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend code
-COPY backend/ .
+# ✅ Copier tout le dossier backend dans /app
+COPY backend /app
 
-# Expose port
+# Exposer le port
 EXPOSE 8000
 
-# Default command
+# ✅ Lancer le serveur depuis manage.py
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

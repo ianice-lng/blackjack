@@ -1,16 +1,17 @@
+# frontend/Dockerfile
+
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Installer les dépendances avant de copier le reste du code
 COPY frontend/package*.json ./
 RUN npm install
 
-# Copy frontend code
+# Copier le reste du projet
 COPY frontend/ .
 
-# Expose port
 EXPOSE 5173
 
-# Default command
-CMD ["npm", "start"]
+# Lancer le serveur Vite
+CMD ["npm", "run", "dev", "--", "--host"]

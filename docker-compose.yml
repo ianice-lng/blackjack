@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   backend:
     build:
@@ -9,7 +11,15 @@ services:
       - media_volume:/app/media
     ports:
       - "8000:8000"
-    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      # ⚠️ ton settings.py est dans backend/mysite/settings.py
+      - DJANGO_SETTINGS_MODULE=mysite.settings
+    command: >
+      sh -c "
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
 
   frontend:
     build:
@@ -17,18 +27,14 @@ services:
       dockerfile: frontend/Dockerfile
     volumes:
       - ./frontend:/app
+      # ✅ empêche l’écrasement du dossier node_modules du conteneur
+      - /app/node_modules
     ports:
       - "5173:5173"
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - VITE_API_URL=http://backend:8000/  # 👈 ajout important
     command: npm run dev -- --host 0.0.0.0
-    networks:
-      - appnet  # 👈 ajout
 
 volumes:
   static_volume:
   media_volume:
-
-networks:
-  appnet:  # 👈 déclaration du réseau
