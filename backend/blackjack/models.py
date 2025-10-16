@@ -17,25 +17,23 @@ class Game(models.Model):
                 result.append(player)
             else:
                 break
+        return result
 
         # get winners
         # player == 21 if exists
         # players < 21 if no players  at 21
         # Can have multiple winners
 
-        result = sorted(result, key=lambda x: x.score, reverse=True)
-        return result
+        
 
     def current_player(self):
 
         # filtered_players = players.filtered
         # by stand is False and player < 21
         # get current in filtered_players
-        players = self.players.order_by('id')
-        if not players:
+        active_players = self.players.filter(stand=False, score__lt=21).order_by('id')
+        if not active_players:
             return None
-        active_players = [p for p in players if not p.stand]
-        active_players = [p for p in active_players if p.score < 21]
         
         # Si tous les joueurs sont en stand, la partie est finie
         if not active_players:

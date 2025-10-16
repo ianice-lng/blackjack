@@ -57,7 +57,7 @@ export default function Game() {
   if (!game) return <p>Chargement du jeu...</p>;
   return (
     <div className="App">
-      {game.ended ? (
+      {game.ended || game.current_players.length === 0 ? (
         <>
           <h2>La partie est terminée !</h2>
           <h2>Gagnants:</h2>
@@ -65,7 +65,7 @@ export default function Game() {
       ) : (
         <>
           <h1>Game {game.name}</h1>
-          <h2>Au tour de {game?.current_players[0]?.name}</h2>
+          <h2>Au tour de {game?.current_players?.[0]?.name}</h2>
           <SelectList setNumberDice={setNumberDice} />
           <button onClick={() => handlePlay(numberDice, false)}>Lancer</button>
           <button onClick={() => handlePlay(0, true)}>Stand</button>

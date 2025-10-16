@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - ./backend:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_API_URL=http://backend:8000/  # 👈 ajout important
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - appnet  # 👈 ajout
+
+volumes:
+  static_volume:
+  media_volume:
+
+networks:
+  appnet:  # 👈 déclaration du réseau
