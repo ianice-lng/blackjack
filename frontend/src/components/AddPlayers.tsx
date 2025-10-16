@@ -28,6 +28,7 @@ export default function AddPlayers({ players, setPlayers }: AddPlayersProps) {
         placeholder="Nom du joueur"
         value={newPlayer}
         onChange={(e) => setNewPlayer(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter') handleAddPlayer() }}
       />
       <button onClick={handleAddPlayer}>Ajouter</button>
     </div>

@@ -30,6 +30,7 @@ class GameSchema(Schema):
 
 class PlaySchema(Schema):
     dices: int
+    stand: bool = False
 
 
 @api.post("/start", response=GameSchema)
@@ -38,9 +39,6 @@ def start(request, data: StartGameSchema):
     return game
 
 
-@api.post("/play")
-def play(request):
-    pass
 
 @api.get("/{id}", response=GameSchema)
 def get_game(request, id:int):
@@ -63,8 +61,12 @@ def get_game(request, id:int):
 def play(request, id:int, data: PlaySchema):
     game = services.get_game(id)
     current_player = game.current_player()
-    print("test" + str(current_player.name))
-    current_player.add_score(data.dices)
+    if data.stand:
+        if current_player:
+            current_player.stand = True
+            current_player.save()
+    if current_player:
+        current_player.add_score(data.dices)
     current = (
         [PlayerSchema.model_validate(current_player)]
         if current_player
@@ -74,6 +76,9 @@ def play(request, id:int, data: PlaySchema):
     game.save()
     winners = [PlayerSchema.model_validate(p) for p in game.winner()]
     game_data = GameSchema.model_validate(game).model_dump()
-    game_data["winners"] = winners
-    game_data["current_players"] = current
+    print("test " + str(len(winners)))
+    if len(winners) != 0:
+        game_data["winners"] = winners
+    if len(current) != 0:
+        game_data["current_players"] = current
     return game_data

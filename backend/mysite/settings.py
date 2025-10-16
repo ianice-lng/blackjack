@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +49,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+"http://localhost:5173", # L'URL de votre application React
+# Ajoutez d'autres origines si nécessaire (ex: votre domaine de production)
+]
+CORS_ALLOW_CREDENTIALS = True # Permet l'envoi de cookies et d'en-têtes d'autorisation
 
 ROOT_URLCONF = 'mysite.urls'
 

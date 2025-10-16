@@ -31,12 +31,24 @@ class Game(models.Model):
         # filtered_players = players.filtered
         # by stand is False and player < 21
         # get current in filtered_players
-
         players = self.players.order_by('id')
-        if not players.exists():
+        if not players:
             return None
-        index = self.turn % players.count()
-        return players[index]
+        active_players = [p for p in players if not p.stand]
+        active_players = [p for p in active_players if p.score < 21]
+        
+        # Si tous les joueurs sont en stand, la partie est finie
+        if not active_players:
+            self.ended = True
+            self.save(update_fields=["ended"])
+            return None
+
+        # Tourne entre les joueurs encore actifs
+        index = self.turn % len(active_players)
+
+        return active_players[index]
+            
+            
 
 
 class Player(models.Model):
@@ -53,5 +65,8 @@ class Player(models.Model):
         points = sum(random.randint(1, 6) for _ in range(number_dices)) 
 
         self.score += points
+
         self.save()
         return self.score
+
+
