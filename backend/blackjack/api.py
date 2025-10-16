@@ -74,11 +74,14 @@ def play(request, id:int, data: PlaySchema):
     )
     game.turn += 1
     game.save()
+    next_player = game.current_player()
+    next_current = [PlayerSchema.model_validate(next_player)] if next_player else []
+
     winners = [PlayerSchema.model_validate(p) for p in game.winner()]
     game_data = GameSchema.model_validate(game).model_dump()
     print("test " + str(len(winners)))
     if len(winners) != 0:
         game_data["winners"] = winners
     if len(current) != 0:
-        game_data["current_players"] = current
+        game_data["current_players"] = next_current
     return game_data
