@@ -3,3 +3,4 @@
 /backend/blackjack/migrations/__pycache__/
 /backend/blackjack/migrations/0001_initial.py
 /backend/db.sqlite3
+/backend/mysite/__pycache__/

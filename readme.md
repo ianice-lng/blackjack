@@ -30,5 +30,4 @@ docker-compose up --build
 ## Notes
 
 - Static and media files are persisted in Docker volumes.  
-- The frontend and backend are live-reloaded while developing.  
-- Merci [Gabriel](https://github.com/Gabriel-Penteadoo) pour le readme 
+- The frontend and backend are live-reloaded while developing.
